@@ -28,7 +28,7 @@ class SavingsAccount extends Account{
 	}
 	void addInterest(){
 		Scanner in=new Scanner(System.in);
-		System.out.print("Enter rate of interest and time period: ");
+		System.out.print("Note: Interest for first term will be automatically deposited to account.\nEnter rate of interest and time period: ");
 		double interest=(in.nextDouble())*(in.nextInt())*(balance)/100;
 		System.out.println("The interest for Rs "+balance+" is Rs "+interest+" per annum.");
 		balance+=interest;
@@ -89,6 +89,7 @@ class BankMain{
 						int c=(i==0)?1:0;
 						System.out.println("Automatically transferring to person "+(c+1)+"..");
 						p[i].transfer(p[c]);
+						break;
 					default:
 						choice=0;
 						System.out.println("Exiting...");
