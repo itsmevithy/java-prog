@@ -1,6 +1,8 @@
 package accounttypes;
 import bank.*;
 import java.util.Scanner;
+import bankexceptions.InvalidAmountException;
+import bankexceptions.InsufficientFundsException;
 
 public class SavingsAccount extends BankAccount implements Transaction{
 	double interestRate;
@@ -16,12 +18,14 @@ public class SavingsAccount extends BankAccount implements Transaction{
 	public double calculateInterest(){
 		return interestRate;
 	}
-	public void deposit(double amount){
+	public void deposit(double amount) throws InvalidAmountException{
+                if(amount<=0) throw new InvalidAmountException();
 		balance+=amount;
 		System.out.println("Done!");
 	}
-	public boolean withdraw(double amount){
+	public boolean withdraw(double amount) throws InsufficientFundsException{
 		double oldbal=balance;
+		if(amount>=amount) throw new InsufficientFundsException();
 		balance-=(balance<=amount)?0:amount;
 		//System.out.println(((oldbal>amount)?("Done. New "):("Failed. Insufficient balance. "))+"balance: "+balance);
 		return (oldbal>amount)?true:false;
@@ -31,10 +35,18 @@ public class SavingsAccount extends BankAccount implements Transaction{
 		System.out.print("Enter amont to transfer: ");
 		double amt=in.nextDouble();
 		System.out.println("Withdrawing amount from payer...");
-		if(this.withdraw(amt)){
-			System.out.println("Tranferring to payee...");
-			q.deposit(amt);
-		}
+		try{
+                        if(this.withdraw(amt)){
+                                System.out.println("Tranferring to payee...");
+                                q.deposit(amt);
+                        }
+                }
+                catch (InvalidAmountException iae){
+                        System.out.println (iae.getMessage ());
+                }
+                catch (InsufficientFundsException ife){
+                        System.out.println (ife.getMessage ());
+                }
 	}
 	public double balanceEnquiry(){
 		return balance;

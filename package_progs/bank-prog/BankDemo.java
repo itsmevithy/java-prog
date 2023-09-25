@@ -1,10 +1,13 @@
-import accounttypes.*;
+import accounttypes.CurrentAccount;
+import accounttypes.SavingsAccount;
 import bank.*;
-import bankexceptions.*;
+import bankexceptions.InvalidAmountException;
+import bankexceptions.InsufficientFundsException;
 import java.util.Scanner;
 
 class BankDemo{
 	public static void main(String a[]){
+		try{
 		int choice, i;
 		Scanner in=new Scanner(System.in);
 		SavingsAccount p[]=new SavingsAccount[2];
@@ -28,14 +31,16 @@ class BankDemo{
 				switch(choice){
 					case 1:
 						System.out.print("Enter amount to be deposited: ");
-						p[i].deposit(in.nextDouble());
+						double amt=in.nextDouble();
+	//					if(amt<=0) throw new InvalidAmountException();
+						p[i].deposit(amt);
 						break;
 					case 2:
 						System.out.print("Enter amount to be withdrawn: ");
 						p[i].withdraw(in.nextDouble());
 						break;
 					case 3:
-						System.out.println(p[i].addInterest());
+						System.out.println(p[i].calculateInterest());
 						break;
 					case 4:
 						p[i].displayAccountDetails();
@@ -51,7 +56,7 @@ class BankDemo{
 						break;
 				}
 			}while(choice!=0);
-		}	
+		}
 	CurrentAccount q[]=new CurrentAccount[2];
 		for(i=0; i<2; i++){
 			System.out.println("For customer "+(i+1)+": ");
@@ -74,7 +79,7 @@ class BankDemo{
 					case 1:
 						System.out.print("Enter amount to be deposited: ");
 						double amt=in.nextDouble();
-						if(amt<=0) throw new InvalidAmountException();
+	//					if(amt<=0) throw new InvalidAmountException();
 						q[i].deposit(amt);
 						break;
 					case 2:
@@ -82,7 +87,7 @@ class BankDemo{
 						q[i].withdraw(in.nextDouble());
 						break;
 					case 3:
-						System.out.println(p[i].checkOverdraftLimit());
+						System.out.println(q[i].checkOverdraftLimit());
 						break;
 					case 4:
 						q[i].displayAccountDetails();
@@ -90,7 +95,7 @@ class BankDemo{
 					case 5:
 						int c=(i==0)?1:0;
 						System.out.println("Automatically transferring to person "+(c+1)+"..");
-						q[i].transfer(p[c]);
+						q[i].transfer(q[c]);
 					default:
 						choice=0;
 						System.out.println("Exiting...");
@@ -99,5 +104,12 @@ class BankDemo{
 				}
 			}while(choice!=0);
 		}
+	}
+	catch (InvalidAmountException iae){
+		System.out.println(iae.getMessage());
+	}
+	catch (InsufficientFundsException ife){
+		System.out.println(ife.getMessage());
+	}
 	}
 }
