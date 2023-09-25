@@ -1,9 +1,9 @@
 package accounttypes;
 import bank.*;
 
-public class CurrentAccount extends Bankaccount implements Traansaction{
+public class CurrentAccount extends BankAccount implements Transaction{
 	double overdraftLimit;
-	public CurrentAccount(double acno, String name, double bal, double ovdftlim){
+	public CurrentAccount(int acno, String name, double bal, double ovdftlim){
 		accountNumber=acno;
 		accountHolderName=name;
 		balance=bal;

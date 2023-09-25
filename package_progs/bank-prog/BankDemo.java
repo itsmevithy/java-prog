@@ -1,6 +1,7 @@
 import accounttypes.*;
 import bank.*;
 import bankexceptions.*;
+import java.util.Scanner;
 
 class BankDemo{
 	public static void main(String a[]){
@@ -50,8 +51,7 @@ class BankDemo{
 						break;
 				}
 			}while(choice!=0);
-		}
-	}
+		}	
 	CurrentAccount q[]=new CurrentAccount[2];
 		for(i=0; i<2; i++){
 			System.out.println("For customer "+(i+1)+": ");
@@ -73,14 +73,9 @@ class BankDemo{
 				switch(choice){
 					case 1:
 						System.out.print("Enter amount to be deposited: ");
-						try{
-							double amt=in.nextDouble();
-							if(amt<=0) throw new InvalidAmountException();
-							q[i].deposit();
-						}
-						catch{
-							
-						}
+						double amt=in.nextDouble();
+						if(amt<=0) throw new InvalidAmountException();
+						q[i].deposit(amt);
 						break;
 					case 2:
 						System.out.print("Enter amount to be withdrawn: ");

@@ -1,9 +1,10 @@
 package accounttypes;
 import bank.*;
+import java.util.Scanner;
 
 public class SavingsAccount extends BankAccount implements Transaction{
 	double interestRate;
-	public SavingsAccount(double acno, String name, double bal, double intr){
+	public SavingsAccount(int acno, String name, double bal, double intr){
 		accountNumber=acno;
 		accountHolderName=name;
 		balance=bal;

@@ -1,9 +1,9 @@
 package bank;
 
 public abstract class BankAccount{
-	int accountNumber;
-	String accountHolderName;
-	double balance;
+	public int accountNumber;
+	public String accountHolderName;
+	public double balance;
 	public abstract void displayAccountDetails();
 }
 

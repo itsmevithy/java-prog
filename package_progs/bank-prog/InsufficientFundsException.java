@@ -1,7 +1,7 @@
 package bankexceptions;
 
-public class InvalidAmountException extends Exception{
-	InvalidAmountException(){
+public class InsufficientFundsException extends Exception{
+	InsufficientFundsException(){
 		super("Withdrawl failed. Insufficient funds in account.");
 	}	
 }
