@@ -1,7 +1,7 @@
 package userexception;
 
-class IncorrectFeedbackException extends Exception{
-	public IncorrectFeedbackException(){
+public class InvalidFeedbackException extends Exception{
+	public InvalidFeedbackException(){
 		super("Less than 10 characters entered.\n");
 	}
 }
