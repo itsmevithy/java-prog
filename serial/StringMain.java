@@ -20,7 +20,12 @@ class Stringops{
 		for(int i=0; i<n; i++) if(((String)words.get(i)).endsWith("s")) words.set(i, ((String)words.get(i)).toUpperCase());
 	}
 	void removePlurals(){
-		for(int i=0; i<words.size(); i++) if(((String)words.get(i)).endsWith("s")||((String)words.get(i)).endsWith("S")) words.remove(i);
+		Iterator w=words.iterator();
+		String a;
+		while(w.hasNext()){
+			a=(String)w.next();
+			if(a.endsWith("s")||a.endsWith("S")) w.remove();
+		}
 		n=words.size();
 	}
 	void display(){	
