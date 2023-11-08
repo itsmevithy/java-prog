@@ -16,25 +16,20 @@ class Stringops{
 		System.out.println("Reversed: "+temp);
 	}
 	void capitalizePlurals(){
-		ArrayList<String> word=new ArrayList<String>(words);
-		Iterator w=word.iterator();
-		while(w.hasNext()){
-			String p=(String)w.next();
+		TreeSet<String> temp=new TreeSet<String>(words);
+		TreeSet<String> word=new TreeSet<String>(words);
+		//Iterator w=word.iterator();
+		//while(w.hasNext())
+		for(String p:temp){
+			//String p=(String)w.next();
 			if(p.endsWith("s")) word.add(p.toUpperCase());
 		}
-		Iterator wo=word.iterator();
-		while(wo.hasNext()) if(((String)wo.next()).endsWith("s")) wo.remove();
-		TreeSet<String> temp=new TreeSet<String>(word);
-		System.out.println("After Capitalizing: "+temp);
+		word.removeIf(z->(z.endsWith("s")));
+		System.out.println("After Capitalizing: "+word);
 	}
 	void removePlurals(){
 		TreeSet<String> temp=new TreeSet<String>(words);
-		Iterator w=temp.iterator();
-		String p;
-		while(w.hasNext()){
-			p=(String)w.next(); 
-			if(p.endsWith("s")) w.remove();
-		}
+		temp.removeIf(z->((z.endsWith("S"))||(z.endsWith("s"))));
 		System.out.println("After removing plurals: "+temp);
 	}
 }
