@@ -39,14 +39,15 @@ class AirlinesManagement extends Airlines{
 		System.out.print("Current: ");
 		this.display();
 	}
-	void search(int targetID){
+	String search(int targetID){
 		int check=0;
 		for(Airlines i: psgList) if(i.Passenger_ID==targetID){
-			System.out.println("Passenger found!\n"+i);
+			String str=i.toString();
 			check++;
-			return;
+			return("Passenger found!\n"+str);
 		}
-		if(check==0) System.out.println("Passenger not found!\n");
+		if(check==0) return("Passenger not found!\n");
+		return "";
 	}
 	String display(){
 		int a=0;
@@ -83,17 +84,22 @@ class Jswing{
 		}*/
 		JButton disp=new JButton("Display");
 		disp.setBounds(150, 200, 220, 50);		
-	//	mainframe.add(ins);
 		mainframe.add(disp);
-		mainframe.setSize(500, 600);
-		mainframe.setLayout(new FlowLayout());
-		mainframe.setVisible(true);
 		disp.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				JOptionPane.showMessageDialog(mainframe, list.display());
 			}
 		});
-		JLabel labl=new JLabel("", JLabel.CENTER);
-		labl.setText("Insert");
+		/*JButton src=new JButton("Display");
+		src.setBounds(150, 200, 220, 50);		
+		mainframe.add(src);
+		mainframe.setSize(500, 600);
+		mainframe.setLayout(new FlowLayout());
+		mainframe.setVisible(true);
+		src.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JOptionPane.showMessageDialog(mainframe, list.display());
+			}
+		});*/
 	}
 }
