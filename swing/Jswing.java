@@ -1,5 +1,5 @@
-import java.awt.*;
 import java.awt.event.*;
+import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -8,20 +8,12 @@ class Airlines{
 	int Flight_Number, Passenger_ID;
 	Scanner in=new Scanner(System.in);
 	Airlines(){}
-	Airlines(int x){
-		System.out.println("Passenger name: ");
-		Passenger_Name=in.next();	
-		System.out.println("Passenger ID: ");
-		Passenger_ID=in.nextInt();
-		System.out.println("Flight number: ");
-		Flight_Number=in.nextInt();
-		System.out.println("Source: ");
-		Source=in.next();
-		System.out.println("Destination: ");
-		Destination=in.next();
-	}
-	Airlines getInput(){
-		return new Airlines(3);
+	Airlines(String pname, String src, String dest, int fnum, int pid){
+		Passenger_Name=pname;
+		Source=src;
+		Destination=dest;
+		Flight_Number=fnum;
+		Passenger_ID=pid;
 	}
 	public String toString(){
 		return ("\nPassenger name: "+Passenger_Name+"\nPassenger ID: "+Passenger_ID+"\nFlight number: "+Flight_Number+"\nSource: "+Source+"\nDestination: "+Destination);
@@ -29,77 +21,110 @@ class Airlines{
 }
 
 class AirlinesManagement extends Airlines{
+	private JFrame f;
 	ArrayList<Airlines> psgList=new ArrayList<Airlines>();
 	Scanner in=new Scanner(System.in);
-	void insert(){
-		insert(1);
+	AirlinesManagement(JFrame mf){
+		this.f=mf;
 	}
-	void insert(int n){
-		for(int i=0; i<n; i++) psgList.add(getInput());
-		System.out.print("Current: ");
-		this.display();
-	}
-	String search(int targetID){
-		int check=0;
-		for(Airlines i: psgList) if(i.Passenger_ID==targetID){
-			String str=i.toString();
-			check++;
-			return("Passenger found!\n"+str);
+	void getInput(){
+		JFrame inf=new JFrame("Insert entries");
+		inf.setSize(300, 240);
+		inf.setLayout(new GridLayout(2,1));
+		JLabel larr[]=new JLabel[5];
+		JTextField tarr[]=new JTextField[5];
+		larr[0]=new JLabel("Passenger name: ");
+		larr[1]=new JLabel("Passenger ID: ");
+		larr[2]=new JLabel("Flight number: ");
+		larr[3]=new JLabel("Source: ");
+		larr[4]=new JLabel("Destination: ");
+		JButton ib=new JButton("Insert");
+		for(int i=0; i<5; i++) tarr[i]=new JTextField();
+		ib.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+					String pname=tarr[0].getText();
+					int pid=Integer.parseInt(tarr[1].getText());
+					int fnum=Integer.parseInt(tarr[2].getText());
+					String src=tarr[3].getText();
+					String dest=tarr[4].getText();
+					psgList.add(new Airlines(pname, src, dest, fnum, pid));
+					for(int i=0; i<5; i++) tarr[i].setText("");
+					JOptionPane.showMessageDialog(ib, ("Done. No of entries: "+psgList.size()));
+			}
+		});
+		JPanel gin=new JPanel();
+		gin.setLayout(new GridLayout(5, 2));
+		for(int i=0; i<5; i++){
+			gin.add(larr[i]);
+			gin.add(tarr[i]);
 		}
-		if(check==0) return("Passenger not found!\n");
-		return "";
+		inf.getContentPane().add(gin);
+		inf.add(ib);
+		inf.setVisible(true);
 	}
-	String display(){
-		int a=0;
+	void search(){
+		JFrame sf=new JFrame("Search passenger");
+		sf.setSize(300, 200);
+		JLabel lb=new JLabel("Enter Passenger ID to search");
+		JButton sb=new JButton("Search");
+		JTextField tb=new JTextField(8);
+		sb.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				int targetID=Integer.parseInt(tb.getText());
+				for(Airlines i: psgList) if(i.Passenger_ID==targetID){
+					JOptionPane.showMessageDialog(sf, ("Passenger found!\n"+(i.toString())));
+					return;
+				}
+				JOptionPane.showMessageDialog(sf, ("Passenger not found!\n"));
+				tb.setText("");
+			}
+		});
+		sf.setLayout(new FlowLayout());
+		sf.add(lb);
+		sf.add(tb);
+		sf.add(sb);
+		sf.setVisible(true);
+	}
+	void display(){
 		String text="";
-		psgList.sort((o1, o2)->(o1.Passenger_Name).compareTo(o2.Passenger_Name));
-		//for(Airlines i: psgList) System.out.println("Passenger "+(a++)+":-\n"+i);
-		for(Airlines i: psgList) text+=i;
-		return text;
+		if(psgList.size()>0){
+			psgList.sort((o1, o2)->(o1.Passenger_Name).compareTo(o2.Passenger_Name));
+			for(Airlines i: psgList) text+=i;
+			text+="\n";
+		}
+		else text="Empty list!!!\nUpload some entries first!";
+		JOptionPane.showMessageDialog(f, text);
 	}
 }
 
 class Jswing{
 	public static void main(String a[]){
-		AirlinesManagement list=new AirlinesManagement();
-		/*int n;
-		System.out.print("Number of entries to be recorded: ");
-		n=list.in.nextInt();
-		list.insert();
-		System.out.println("Enter ID to search: ");
-		int x=list.in.nextInt();
-		list.search(x);
-		System.out.println("Final list:-");
-		list.display();*/
-		System.out.println("Note: only diplay button will be opened in new window after entering details in cmdline");
-		list.insert();
 		JFrame mainframe=new JFrame("Passenger Portal");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		/*JButton ins=new JButton("Insert");
-		ins.setBounds(150, 200, 220, 50);
-		ins.addActionListener(new ActionListener()){
-			public void actionPerformed(ActionEvent e){
-				
-			}
-		}*/
+		mainframe.setSize(300, 150);
+		AirlinesManagement list=new AirlinesManagement(mainframe);
+		JButton ins=new JButton("Insert");
 		JButton disp=new JButton("Display");
-		disp.setBounds(150, 200, 220, 50);		
-		mainframe.add(disp);
+		JButton src=new JButton("Search");
+		ins.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				list.getInput();
+			}
+		});		
 		disp.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				JOptionPane.showMessageDialog(mainframe, list.display());
+				list.display();
 			}
 		});
-		/*JButton src=new JButton("Display");
-		src.setBounds(150, 200, 220, 50);		
-		mainframe.add(src);
-		mainframe.setSize(500, 600);
-		mainframe.setLayout(new FlowLayout());
-		mainframe.setVisible(true);
 		src.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				JOptionPane.showMessageDialog(mainframe, list.display());
+				list.search();
 			}
-		});*/
+		});
+		mainframe.setLayout(new GridLayout(3, 1));
+		mainframe.add(ins);
+		mainframe.add(disp);
+		mainframe.add(src);
+		mainframe.setVisible(true);
 	}
 }
